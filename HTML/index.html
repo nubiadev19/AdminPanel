@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <!-- Importación de Tailwind CSS vía CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: DM Serif Text -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=TASA+Orbiter:wght@400..800&display=swap" rel="stylesheet"> <!-- Estilo para listado del menu -->
+
+  <style>
+    /* Evita que la barra lateral desaparezca en pantallas pequeñas */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .sidebar.active {
+        display: block;
+        position: absolute;
+        z-index: 10;
+      
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body class="flex h-screen ">
+
+  <!-- BARRA LATERAL -->
+  <aside id="sidebar" class="sidebar w-64 bg-purple-900 text-white flex-shrink-0 p-5">
+    <!-- Logo o título del panel -->
+    <h2 class="text-2xl font-bold mb-6 text-4xl" style="font-family: 'DM Serif Text', serif;">Admin Panel</h2>
+    <!-- Lista de menús -->
+    <nav class="flex flex-col gap-6 text-md font-bold mb-6" style="font-family: 'TASA Orbiter', sans-serif;">
+      <button onclick="showView('crear')" class="text-left px-3 py-2 rounded hover:bg-purple-400">CREAR USUARIOS</button>
+      <button onclick="showView('listado')" class="text-left px-3 py-2 rounded hover:bg-purple-400">LISTADO DE USUARIOS</button>
+      <button onclick="showView('buscar')" class="text-left px-3 py-2 rounded hover:bg-purple-400">BUSCAR USUARIOS</button>
+      <button onclick="showView('proyectos')" class="text-left px-3 py-2 rounded hover:bg-purple-400">GESTIONAR PROYECTOS</button>
+    </nav>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="flex-1 p-8 overflow-auto">
+
+    <!-- BOTÓN PARA MENÚ RESPONSIVE -->
+    <button onclick="toggleSidebar()" class="md:hidden mb-4 bg-gray-800 text-white px-4 py-2 rounded">
+      Menú
+    </button>
+
+    <!-- VISTA CREAR USUARIOS -->
+    <div id="crear" class="view">
+      <h1 class="text-3xl font-bold mb-6 text-purple-700" style="font-family: 'TASA Orbiter', sans-serif;">Crear Usuario</h1>
+      <!-- Formulario de creación -->
+      <form class="bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-4" style="font-family: 'TASA Orbiter', sans-serif;">
+        <!-- Identificación -->
+        <div >
+          <label class="block font-medium mb-1">Identificación</label>
+          <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 border-purple-100" placeholder="Ingrese identificación">
+        </div>
+        <!-- Nombres -->
+        <div>
+          <label class="block font-medium mb-1">Nombres</label>
+          <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 border-purple-100" placeholder="Ingrese nombres">
+        </div>
+        <!-- Apellidos -->
+        <div>
+          <label class="block font-medium mb-1">Apellidos</label>
+          <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 border-purple-100" placeholder="Ingrese apellidos">
+        </div>
+        <!-- Fecha de nacimiento -->
+        <div>
+          <label class="block font-medium mb-1">Fecha de nacimiento</label>
+          <input type="date" class="w-full border border-purple-100 rounded px-3 py-2">
+        </div>
+        <!-- Género -->
+        <div>
+          <label class="block font-medium mb-1">Género</label>
+          <select class="w-full bg-purple-100   rounded px-3 py-2 border border-purple-200">
+            <option value="">Seleccione</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="O">Otro</option>
+          </select> 
+        </div>
+        <!-- Email -->
+        <div>
+          <label class="block font-medium mb-1">Email</label>
+          <input type="email" class="w-full border border-gray-300 rounded px-3 py-2 border-purple-100" placeholder="Ingrese email">
+        </div>
+        <!-- Botón enviar -->
+        <div class="md:col-span-2">
+          <button type="submit" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-900">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- VISTA LISTADO DE USUARIOS -->
+<div id="listado" class="view hidden">
+  <h1 class="text-3xl font-bold mb-6 text-purple-700">Listado de Usuarios</h1>
+  <!-- Tabla de usuarios -->
+  <div class="overflow-x-auto">
+    <table class="w-full bg-white rounded shadow-md">
+      <thead class="bg-purple-100">
+        <tr>
+          <th class="px-4 py-2 border text-left">Identificación</th>
+          <th class="px-4 py-2 border text-left">Nombres</th>
+          <th class="px-4 py-2 border text-left">Apellidos</th>
+          <th class="px-4 py-2 border text-left">Fecha Nacimiento</th>
+          <th class="px-4 py-2 border text-left">Género</th>
+          <th class="px-4 py-2 border text-left">Email</th>
+          <th class="px-4 py-2 border text-center">Acción</th> <!-- Nueva columna -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Datos de ejemplo -->
+        <tr class="hover:bg-purple-50">
+          <td class="border px-4 py-2">12345</td>
+          <td class="border px-4 py-2">Juan</td>
+          <td class="border px-4 py-2">Pérez</td>
+          <td class="border px-4 py-2">1990-05-12</td>
+          <td class="border px-4 py-2">M</td>
+          <td class="border px-4 py-2">juan@mail.com</td>
+          <!-- Botones de acción -->
+          <td class="border px-4 py-2 text-center space-x-2">
+            <button class="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">Editar</button>
+            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
+          </td>
+        </tr>
+        <tr class="hover:bg-purple-50">
+          <td class="border px-4 py-2">67890</td>
+          <td class="border px-4 py-2">Ana</td>
+          <td class="border px-4 py-2">Gómez</td>
+          <td class="border px-4 py-2">1992-11-23</td>
+          <td class="border px-4 py-2">F</td>
+          <td class="border px-4 py-2">ana@mail.com</td>
+          <td class="border px-4 py-2 text-center space-x-2">
+            <button class="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">Editar</button>
+            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+    <!-- VISTA BUSCAR USUARIOS -->
+    <div id="buscar" class="view hidden">
+      <h1 class="text-3xl text-purple-700 font-bold mb-6">Buscar Usuario</h1>
+      <!-- Formulario de búsqueda -->
+      <form class="flex flex-col md:flex-row gap-4 mb-6">
+        <input type="text" placeholder="Ingrese término" class="flex-1 border border-purple-100 rounded px-3 py-2">
+        <select class="border border-purple-300 bg-purple-100 px-3 py-2  ">
+          <option value="identificacion">Identificación</option>
+          <option value="nombres">Nombres</option>
+          <option value="apellidos">Apellidos</option>
+          <option value="fecha">Fecha Nacimiento</option>
+          <option value="genero">Género</option>
+          <option value="email">Email</option>
+        </select>
+        <button type="submit" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-900">Buscar</button>
+      </form>
+      <!-- Tabla de resultados -->
+      <div class="overflow-x-auto">
+        <table class="w-full bg-white rounded shadow-lg">
+          <thead class="bg-purple-100">
+            <tr>
+              <th class="px-4 py-2 border">Identificación</th>
+              <th class="px-4 py-2 border">Nombres</th>
+              <th class="px-4 py-2 border">Apellidos</th>
+              <th class="px-4 py-2 border">Fecha Nacimiento</th>
+              <th class="px-4 py-2 border">Género</th>
+              <th class="px-4 py-2 border">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Datos de ejemplo -->
+            <tr class="text-center border-purple-100 hover:bg-purple-50">
+              <td class="border px-4 py-2">12345</td>
+              <td class="border px-4 py-2">Juan</td>
+              <td class="border px-4 py-2">Pérez</td>
+              <td class="border px-4 py-2">1990-05-12</td>
+              <td class="border px-4 py-2">M</td>
+              <td class="border px-4 py-2">juan@mail.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VISTA GESTIONAR PROYECTOS -->
+    <div id="proyectos" class="view hidden">
+      <h1 class="text-3xl text-purple-700 font-bold mb-6">Gestionar Proyectos</h1>
+      <p class="text-gray-600">Aquí iría la gestión de proyectos...</p>
+    </div>
+  </div>
+
+  <!-- SCRIPT PARA CAMBIAR VISTAS -->
+  <script>
+    // Función para mostrar la vista correspondiente
+    function showView(viewId) {
+      const views = document.querySelectorAll('.view'); // selecciona todas las vistas
+      views.forEach(v => v.classList.add('hidden')); // oculta todas
+      document.getElementById(viewId).classList.remove('hidden'); // muestra la seleccionada
+    }
+
+    // Función para mostrar/ocultar barra lateral en móvil
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
